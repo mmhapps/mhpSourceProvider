@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.msc.player.sourceprovider">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="false"
+        android:supportsRtl="true"
+        tools:replace="android:allowBackup">
+
+        <meta-data
+            android:name="lib_ver"
+            android:value="@integer/source_provider_lib_version" />
+    </application>
+
+</manifest>
