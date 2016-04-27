@@ -1,6 +1,8 @@
 # mhpSourceProvider
 Source provider library for MH Player
 
+![alt text](http://s1.radikali.ru/uploads/2016/4/27/9e0bc3f55445bbd4879c2c377b4513a0-full.png "Fs.to plugin")
+
 #Usage
 1. Pull library project
 2. Add dependency: 'compile project(':sourceprovider')'
