@@ -14,6 +14,7 @@ public abstract class AbstractSourceProviderService extends Service {
 
     public static final int FOLDER_ID_SETTINGS = 999;
     public static final int FOLDER_ID_FAVOURITES = 9999;
+    public static final String ACTION_REFRESH_BINDERS = "action.refresh_binders";
     public static final String ACTION_ADD_TO_FAVOURITES = "addtofavs";
     public static final String ACTION_REMOVE_FROM_FAVOURITES = "removefromfavs";
     public static final String FAVS_BOOK_KEY = "favs";

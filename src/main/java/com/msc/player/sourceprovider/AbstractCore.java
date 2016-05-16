@@ -7,6 +7,8 @@ import java.util.List;
 
 public abstract class AbstractCore {
 
+    public static final int TAB_ID_LOCAL_TYPE_START = 100000;
+
     protected List<FolderWrapper> groups = new ArrayList<>();
     private Context context;
 
@@ -15,6 +17,13 @@ public abstract class AbstractCore {
 
     public AbstractCore(Context context) {
         this.context = context;
+    }
+
+    public AbstractCore(Context context, boolean noDownload) {
+        this(context);
+        if (noDownload) {
+            tabId = TAB_ID_LOCAL_TYPE_START;
+        }
     }
 
     protected int folderInc() {
