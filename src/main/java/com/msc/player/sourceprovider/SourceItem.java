@@ -3,6 +3,9 @@ package com.msc.player.sourceprovider;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class SourceItem implements Parcelable {
 
     public static final Creator<SourceItem> CREATOR = new Creator<SourceItem>() {
@@ -20,10 +23,12 @@ public class SourceItem implements Parcelable {
     private String artist = "";
     private ItemKind kind = ItemKind.PLAYITEM;
     private String path = "";
-    private int duration = 0;
+
+    private int duration = 0; // in seconds
     private IconPath iconPath = new IconPath("");
 
-    private SourceItem() {
+
+    SourceItem() {
     }
 
     protected SourceItem(Parcel in) {
@@ -33,6 +38,30 @@ public class SourceItem implements Parcelable {
         this.path = in.readString();
         this.duration = in.readInt();
         this.iconPath = new IconPath(in.readString());
+    }
+
+    void readFromJSONObject(JSONObject in) {
+        this.title = in.optString("title");
+        this.artist = in.optString("artist");
+        this.kind = ItemKind.values()[in.optInt("kind")];
+        this.path = in.optString("path");
+        this.duration = in.optInt("duration");
+        this.iconPath = new IconPath(in.optString("iconPath"));
+    }
+
+    JSONObject saveToJSONObject() {
+        JSONObject res = new JSONObject();
+        try {
+            res.put("title", title);
+            res.put("artist", artist);
+            res.put("kind", kind.ordinal());
+            res.put("path", path);
+            res.put("duration", duration);
+            res.put("iconPath", iconPath.getPath());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public IconPath getIconPath() {

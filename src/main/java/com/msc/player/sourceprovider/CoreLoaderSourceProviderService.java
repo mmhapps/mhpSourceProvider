@@ -1,13 +1,11 @@
 package com.msc.player.sourceprovider;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.LruCache;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.paperdb.Paper;
 
 public abstract class CoreLoaderSourceProviderService extends AbstractSourceProviderService {
 
@@ -46,8 +44,8 @@ public abstract class CoreLoaderSourceProviderService extends AbstractSourceProv
     }
 
     private void checkFavsAndModifyCore() {
-        List<SourceItem> curr = Paper.book().read(FAVS_BOOK_KEY, new ArrayList<SourceItem>());
-        if (curr.size() > 0) {
+        List<SourceItem> curr = loadFavourites();
+        if (curr != null && curr.size() > 0) {
             if (core.getWrapperByFolderId(FOLDER_ID_FAVOURITES) == null) {
                 core.insert(new FolderWrapper(new Folder(FOLDER_ID_FAVOURITES, "Favourites", new IconPath("ic_favorite_border_black_36dp")))
                         .tab(new TabWrapper(new Tab(core.tabInc(), "Favourites"), new LoaderFabric() {
@@ -59,6 +57,11 @@ public abstract class CoreLoaderSourceProviderService extends AbstractSourceProv
                         ), 0);
             }
         }
+    }
+
+    protected List<SourceItem> loadFavourites() {
+        List<SourceItem> curr = ItemsSaver.get().read(FAVS_BOOK_KEY, new ArrayList<SourceItem>());
+        return curr;
     }
 
     protected abstract AbstractCore getCore();

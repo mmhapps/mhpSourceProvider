@@ -8,8 +8,6 @@ import android.os.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.paperdb.Paper;
-
 public abstract class AbstractSourceProviderService extends Service {
 
     public static final int FOLDER_ID_SETTINGS = 999;
@@ -66,7 +64,7 @@ public abstract class AbstractSourceProviderService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Paper.init(this);
+        ItemsSaver.init(this);
     }
 
     protected abstract void showSettings();
@@ -102,13 +100,13 @@ public abstract class AbstractSourceProviderService extends Service {
 
     public void processItems(String operation, List<SourceItem> items) {
         if (ACTION_ADD_TO_FAVOURITES.equals(operation)) {
-            List<SourceItem> curr = Paper.book().read(FAVS_BOOK_KEY, new ArrayList<SourceItem>());
+            ArrayList<SourceItem> curr = ItemsSaver.get().read(FAVS_BOOK_KEY, new ArrayList<SourceItem>());
             curr.addAll(items);
-            Paper.book().write(FAVS_BOOK_KEY, curr);
+            ItemsSaver.get().write(FAVS_BOOK_KEY, curr);
             notifyChanges();
         }
         if (ACTION_REMOVE_FROM_FAVOURITES.equals(operation)) {
-            List<SourceItem> curr = Paper.book().read(FAVS_BOOK_KEY, new ArrayList<SourceItem>());
+            List<SourceItem> curr = ItemsSaver.get().read(FAVS_BOOK_KEY, new ArrayList<SourceItem>());
             ArrayList<SourceItem> res = new ArrayList<>();
             for (SourceItem i : curr) {
                 boolean found = false;
@@ -122,7 +120,7 @@ public abstract class AbstractSourceProviderService extends Service {
                     res.add(i);
                 }
             }
-            Paper.book().write(FAVS_BOOK_KEY, res);
+            ItemsSaver.get().write(FAVS_BOOK_KEY, res);
             notifyChanges();
         }
     }
