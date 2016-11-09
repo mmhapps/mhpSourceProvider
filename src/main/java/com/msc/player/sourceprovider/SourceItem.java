@@ -6,7 +6,12 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SourceItem implements Parcelable {
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class SourceItem implements Parcelable, Externalizable {
 
     public static final Creator<SourceItem> CREATOR = new Creator<SourceItem>() {
         @Override
@@ -27,8 +32,7 @@ public class SourceItem implements Parcelable {
     private int duration = 0; // in seconds
     private IconPath iconPath = new IconPath("");
 
-
-    SourceItem() {
+    public SourceItem() {
     }
 
     protected SourceItem(Parcel in) {
@@ -38,6 +42,26 @@ public class SourceItem implements Parcelable {
         this.path = in.readString();
         this.duration = in.readInt();
         this.iconPath = new IconPath(in.readString());
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeUTF(title);
+        out.writeUTF(artist);
+        out.writeInt(kind.ordinal());
+        out.writeUTF(path);
+        out.writeInt(duration);
+        out.writeUTF(iconPath.getPath());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        this.title = in.readUTF();
+        this.artist = in.readUTF();
+        this.kind = ItemKind.values()[in.readInt()];
+        this.path = in.readUTF();
+        this.duration = in.readInt();
+        this.iconPath = new IconPath(in.readUTF());
     }
 
     void readFromJSONObject(JSONObject in) {
