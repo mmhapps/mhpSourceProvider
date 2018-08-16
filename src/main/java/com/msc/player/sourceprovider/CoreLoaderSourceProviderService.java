@@ -12,7 +12,7 @@ public abstract class CoreLoaderSourceProviderService extends AbstractSourceProv
 
     private static final String TAG = "CoreLoader";
 
-    private LruCache<String, FolderWrapper> tempFolders = new LruCache<String, FolderWrapper>(7) {
+    private LruCache<String, FolderWrapper> tempFolders = new LruCache<String, FolderWrapper>(20) {
         @Override
         protected int sizeOf(String key, FolderWrapper value) {
             int size = 1;

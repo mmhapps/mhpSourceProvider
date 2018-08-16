@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class TabWrapper {
     private static final String TAG = "TabWrapper";
-    private final int DEF_PART_SIZE = 200;
+    private final int DEF_PART_SIZE = 40;
     public Tab tab;
     private SourceItemLoader loader;
     private LoaderFabric fabric;
@@ -48,13 +48,18 @@ public class TabWrapper {
         if (kind == LoadKind.CACHED) {
             cachePos = 0;
         }
-        if (cached.size() > cachePos + DEF_PART_SIZE) {
+
+        int cachedSize = cached.size();
+
+        int needSize = Math.max(Math.min((cachedSize - cachePos), DEF_PART_SIZE * 5), DEF_PART_SIZE);
+        if (cachedSize >= cachePos + needSize) {
             Log.v(TAG, "CACHED 2nd buf: ");
-            return getCachedPart(DEF_PART_SIZE);
+            return getCachedPart(needSize);
         }
+
         List<SourceItem> items = loader.loadNext();
         cached.addAll(items);
-        return getCachedPart(DEF_PART_SIZE);
+        return getCachedPart(needSize);
     }
 
     public void resetLoader() {
